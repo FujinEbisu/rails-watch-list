@@ -1,7 +1,9 @@
 print "Cleaning database..."
+# First destroy bookmarks (child records) before destroying parent records
+Bookmark.destroy_all
+# Then destroy parent records
 Movie.destroy_all
 List.destroy_all
-Bookmark.destroy_all
 puts "Database cleaned!"
 
 require "open-uri"
@@ -12,7 +14,7 @@ print "Creating movies..."
 url = "https://tmdb.lewagon.com/movie/top_rated"
 user_serialized = URI.open(url).read
 movies = JSON.parse(user_serialized)["results"]
-  movies.first(10).each do |movie|
+  movies.first(100).each do |movie|
   Movie.create!(
     title: movie["title"],
     overview: movie["overview"],
@@ -21,7 +23,7 @@ movies = JSON.parse(user_serialized)["results"]
   )
 end
 
-print "Creating movies done!"
+puts "Creating movies done!"
 print "Creating lists..."
 
 # Create some lists
@@ -29,12 +31,12 @@ List.create!(name: "Action Movies")
 List.create!(name: "Romantic Movies")
 List.create!(name: "Comedy Movies")
 
-print "Creating lists done!"
+puts "Creating lists done!"
 print "Creating bookmarks..."
 
 # Create some bookmarks
-10.times do
+20.times do
   Bookmark.create(comment: Faker::Name.name, list: List.all.sample, movie: Movie.all.sample)
 end
 
-print "Seed Done!!"
+puts "Seed Done!!"

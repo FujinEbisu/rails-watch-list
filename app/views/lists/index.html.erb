@@ -1,13 +1,106 @@
-<div class="container p-5">
-  <h1 class="align-center">Lists</h1>
-    <ul class= "list-group">
-      <% @lists.each do |list| %>
-        <li class="list-group-item d-flex flex-column align-items-start mb-2">
-          <%= link_to list.name, list_path(list) %>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Leo Movie Lists</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" data-bs-toggle="modal" data-bs-target="#newListModal">New List</a>
         </li>
-      <% if @lists.empty? %>
-        <li>No lists found.</li>
+        <li class="nav-item">
+          <%= link_to "Browse Movies", movies_path, class: "nav-link" %>
+        </li>
+      </ul>
+      <form class="d-flex" role="search" action="<%= lists_path %>" method="get">
+        <input class="form-control me-2" type="search" name="query" placeholder="Search lists" aria-label="Search" value="<%= params[:query] %>"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<!-- Banner Section -->
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.pexels.com/photos/269140/pexels-photo-269140.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); height: 500px; background-size: cover; background-position: center; padding: 150px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 50px;">
+  <h1 class="text-white text-center display-3 fw-bold mb-3">My movie lists</h1>
+  <p class="text-white text-center fs-4 mb-4">Save your favorite movies</p>
+  <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#newListModal">
+    <i class="fas fa-plus me-2"></i>Create a movie list
+  </button>
+</div>
+
+<div class="container mb-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <% if params[:query].present? %>
+      <h2 class="display-6 fw-bold text-primary">Search results for "<%= params[:query] %>"</h2>
+      <%= link_to "Back to all lists", lists_path, class: "btn btn-outline-secondary" %>
+    <% else %>
+      <h2 class="display-6 fw-bold text-primary">My Lists</h2>
+    <% end %>
+  </div>
+  
+  <% if @lists.any? %>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <% @lists.each do |list| %>
+        <div class="col">
+          <%= link_to list_path(list), class: "text-decoration-none" do %>
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-img-top position-relative" style="height: 200px; background-color: #222; overflow: hidden;">
+                <% if list.name.downcase.include?('romantic') %>
+                  <img src="https://images.pexels.com/photos/984944/pexels-photo-984944.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="w-100 h-100 object-fit-cover" alt="<%= list.name %>">
+                <% elsif list.name.downcase.include?('action') %>
+                  <img src="https://images.pexels.com/photos/267961/pexels-photo-267961.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="w-100 h-100 object-fit-cover" alt="<%= list.name %>">
+                <% elsif list.name.downcase.include?('comedy') %>
+                  <img src="https://images.pexels.com/photos/10530131/pexels-photo-10530131.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="w-100 h-100 object-fit-cover" alt="<%= list.name %>">
+                <% else %>
+                  <img src="https://images.pexels.com/photos/65128/pexels-photo-65128.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="w-100 h-100 object-fit-cover" alt="<%= list.name %>">
+                <% end %>
+                <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                  <h5 class="text-white fw-bold mb-0"><%= list.name %></h5>
+                  <span class="badge bg-light text-dark mt-2"><i class="fas fa-film me-1"></i><%= list.bookmarks.count %> movies</span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
       <% end %>
+    </div>
+  <% else %>
+    <div class="text-center p-5 bg-light rounded shadow-sm">
+      <% if params[:query].present? %>
+        <p class="text-muted mb-3">No lists found matching "<%= params[:query] %>".</p>
+        <%= link_to "Back to all lists", lists_path, class: "btn btn-outline-secondary" %>
+      <% else %>
+        <i class="fas fa-film fa-3x text-secondary mb-3"></i>
+        <p class="text-muted mb-3">You don't have any movie lists yet.</p>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newListModal">
+          Create your first movie list
+        </button>
       <% end %>
-    </ul>
+    </div>
+  <% end %>
+</div>
+
+<!-- New List Modal -->
+<div class="modal fade" id="newListModal" tabindex="-1" aria-labelledby="newListModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="newListModalLabel">Create New List</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with(model: List.new, url: lists_path, local: true) do |form| %>
+          <div class="mb-3">
+            <%= form.label :name, "List Name", class: "form-label" %>
+            <%= form.text_field :name, class: "form-control", placeholder: "Enter a name for your list", required: true %>
+          </div>
+          <div class="d-grid">
+            <%= form.submit "Create List", class: "btn btn-success" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>

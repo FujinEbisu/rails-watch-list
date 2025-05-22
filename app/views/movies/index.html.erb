@@ -1,0 +1,36 @@
+<!-- Banner Section -->
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); height: 400px; background-size: cover; background-position: center; padding: 150px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 50px;">
+  <h1 class="text-white text-center display-3 fw-bold mb-3">All Movies</h1>
+  <p class="text-white text-center fs-4">Browse our collection of top-rated films</p>
+</div>
+
+<div class="container mb-5">
+  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+    <% @movies.each do |movie| %>
+      <div class="col">
+        <%= link_to movie_path(movie), class: "text-decoration-none" do %>
+          <div class="card h-100 border-0 shadow-sm movie-card">
+            <img src="<%= movie.poster_url %>" class="card-img-top" alt="<%= movie.title %>">
+            <div class="card-body">
+              <h5 class="card-title text-truncate"><%= movie.title %></h5>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-warning text-dark"><i class="fas fa-star me-1"></i><%= movie.rating %></span>
+                <small class="text-muted"><%= movie.bookmarks.count %> lists</small>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+.movie-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.movie-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+</style>

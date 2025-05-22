@@ -3,7 +3,11 @@ class ListsController < ApplicationController
 
   # GET /lists
   def index
-    @lists = List.all
+    if params[:query].present?
+      @lists = List.where("name ILIKE ?", "%#{params[:query]}%")
+    else
+      @lists = List.all
+    end
   end
 
   # GET /lists/:id

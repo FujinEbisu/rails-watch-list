@@ -1,34 +1,124 @@
-<div class="container d-flex flex-column flex-wrap justify-content-center w-75 mt-5">
-<h1>List : <%=@list.name%></h1>
-  <ul class= "list-group">
-    <% @bookmarks.each do |bookmark| %>
-      <li class="list-group-item d-flex flex-column align-items-start mb-2">
-        Movie Title : <%=bookmark.movie.title %>  | Comment : <%=bookmark.comment %> <%= link_to "Delete", bookmarks_path(bookmark), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }   %>
-      </li>
+<div class="container py-5">
+  <!-- Back navigation -->
+  <div class="mb-4">
+    <%= link_to lists_path, class: "btn btn-outline-primary" do %>
+      <i class="fas fa-arrow-left me-2"></i>Back to Lists
     <% end %>
-  </ul>
-  <div class="card mt-4">
-    <div class="card-header">
-      <h2>Add Bookmark</h2>
-    </div>
-    <div class="card-body">
+  </div>
 
-      <%=  simple_form_for @bookmark, url: list_bookmarks_path(@list) do |f| %>
-        <div class="mb-3">
-          <%= f.label :comment %>
-          <%= f.text_area :comment, class: "form-control" %>
-        </div>
-        <div class="mb-3">
-          <%= f.label :movie_id %>
-          <%= f.collection_select :movie_id, Movie.all, :id, :title, { prompt: 'Select a movie' }, { class: "form-control" } %>
-        </div>
-        <div class="mb-3">
-          <%= f.submit "Add Bookmark", class: "btn btn-primary" %>
-        </div>
+  <!-- List header with background image -->
+  <div class="card mb-5 border-0 shadow">
+    <div class="card-img-overlay-wrapper position-relative rounded overflow-hidden" style="height: 200px;">
+      <% if @list.name.downcase.include?('romantic') %>
+        <img src="https://images.pexels.com/photos/984944/pexels-photo-984944.jpeg" class="card-img w-100 h-100 object-fit-cover" alt="<%= @list.name %>">
+      <% elsif @list.name.downcase.include?('action') %>
+        <img src="https://images.pexels.com/photos/267961/pexels-photo-267961.jpeg" class="card-img w-100 h-100 object-fit-cover" alt="<%= @list.name %>">
+      <% elsif @list.name.downcase.include?('comedy') %>
+        <img src="https://images.pexels.com/photos/10530131/pexels-photo-10530131.jpeg" class="card-img w-100 h-100 object-fit-cover" alt="<%= @list.name %>">
+      <% else %>
+        <img src="https://images.pexels.com/photos/65128/pexels-photo-65128.jpeg" class="card-img w-100 h-100 object-fit-cover" alt="<%= @list.name %>">
       <% end %>
+      <div class="card-img-overlay d-flex align-items-center justify-content-center" style="background: rgba(0,0,0,0.6);">
+        <h1 class="display-4 fw-bold text-white text-center"><%= @list.name %></h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-lg-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h3 class="mb-0"><i class="fas fa-film me-2"></i>Movies in this List</h3>
+          <span class="badge bg-light text-dark"><%= @bookmarks.count %> movies</span>
+        </div>
+        <div class="card-body p-0">
+          <% if @bookmarks.any? %>
+            <ul class="list-group list-group-flush">
+              <% @bookmarks.each do |bookmark| %>
+                <li class="list-group-item p-3">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0 me-3 movie-thumbnail">
+                      <%= link_to movie_path(bookmark.movie) do %>
+                        <img src="<%= bookmark.movie.poster_url %>" alt="<%= bookmark.movie.title %>" class="rounded shadow-sm" style="width: 100px; height: 150px; object-fit: cover;">
+                      <% end %>
+                    </div>
+                    <div class="flex-grow-1 d-flex justify-content-between align-items-start">
+                      <div>
+                        <h5 class="mb-1 text-primary">
+                          <%= link_to bookmark.movie.title, movie_path(bookmark.movie), class: "text-primary text-decoration-none" %>
+                        </h5>
+                        <div class="d-flex align-items-center mb-2">
+                          <span class="badge bg-warning text-dark me-2"><i class="fas fa-star me-1"></i><%= bookmark.movie.rating %></span>
+                        </div>
+                        <div class="comment-box bg-light p-2 rounded">
+                          <i class="fas fa-quote-left me-1 opacity-50"></i>
+                          <%= bookmark.comment %>
+                          <i class="fas fa-quote-right ms-1 opacity-50"></i>
+                        </div>
+                      </div>
+                      <div>
+                        <%= link_to bookmark_path(bookmark), 
+                            data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to remove this movie?" },
+                            class: "btn btn-sm btn-outline-danger" do %>
+                          <i class="fas fa-trash me-1"></i>Remove
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <div class="text-center p-5">
+              <i class="fas fa-film fa-3x text-muted mb-3"></i>
+              <p class="text-muted">No movies in this list yet. Add your first movie using the form.</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
 
+    <div class="col-lg-4">
+      <div class="card shadow position-sticky" style="top: 20px;">
+        <div class="card-header bg-success text-white">
+          <h3 class="mb-0"><i class="fas fa-plus me-2"></i>Add a Movie</h3>
+        </div>
+        <div class="card-body">
+          <%=  simple_form_for @bookmark, url: list_bookmarks_path(@list) do |f| %>
+            <div class="mb-3">
+              <%= f.label :movie_id, "Select a movie", class: "form-label fw-bold" %>
+              <%= f.collection_select :movie_id, Movie.all, :id, :title, 
+                  { prompt: 'Choose a movie' }, 
+                  { class: "form-select" } %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :comment, "Your comment", class: "form-label fw-bold" %>
+              <%= f.text_area :comment, 
+                  placeholder: "Share your thoughts about this movie...",
+                  class: "form-control", 
+                  rows: 3 %>
+            </div>
+            <div class="d-grid">
+              <%= f.submit "Add to My List", class: "btn btn-success" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-</div>
-    <div class="btn btn-danger mt-10"><%= link_to "Back Home", lists_path(@lists) %></div>
-</div>
+<style>
+  .movie-thumbnail {
+    transition: transform 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .movie-thumbnail:hover {
+    transform: scale(1.05);
+  }
+  
+  .comment-box {
+    border-left: 3px solid var(--secondary-color);
+  }
+</style>
