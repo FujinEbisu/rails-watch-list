@@ -1,0 +1,55 @@
+=> 
+[[32m#<Bookmark:0x00007f2408730360[0m
+  id: [34m[1m1[0m,
+  comment: [31m[1m"[0m[31mgood movie[0m[31m[1m"[0m,
+  movie_id: [34m[1m52[0m,
+  list_id: [34m[1m6[0m,
+  created_at:
+   Thu, 22 May 2025 10:52:48.651096000 UTC +00:00,
+  updated_at:
+   Thu, 22 May 2025 10:52:48.651096000 UTC +00:00[32m>[0m,
+ [32m#<Bookmark:0x00007f24089c1048[0m
+  id: [34m[1m2[0m,
+  comment: [31m[1m"[0m[31mgood movie[0m[31m[1m"[0m,
+  movie_id: [34m[1m50[0m,
+  list_id: [34m[1m6[0m,
+  created_at:
+   Thu, 22 May 2025 10:52:48.663562000 UTC +00:00,
+  updated_at:
+   Thu, 22 May 2025 10:52:48.663562000 UTC +00:00[32m>[0m,
+ [32m#<Bookmark:0x00007f24089c0f08[0m
+  id: [34m[1m3[0m,
+  comment: [31m[1m"[0m[31mgood movie[0m[31m[1m"[0m,
+  movie_id: [34m[1m49[0m,
+  list_id: [34m[1m5[0m,
+  created_at:
+   Thu, 22 May 2025 10:52:48.670581000 UTC +00:00,
+  updated_at:
+   Thu, 22 May 2025 10:52:48.670581000 UTC +00:00[32m>[0m,
+ [32m#<Bookmark:0x00007f24089c0c88[0m
+  id: [34m[1m4[0m,
+  comment: [31m[1m"[0m[31mgood movie[0m[31m[1m"[0m,
+  movie_id: [34m[1m54[0m,
+  list_id: [34m[1m6[0m,
+  created_at:
+   Thu, 22 May 2025 10:52:48.680245000 UTC +00:00,
+  updated_at:
+   Thu, 22 May 2025 10:52:48.680245000 UTC +00:00[32m>[0m,
+ [32m#<Bookmark:0x00007f24089c0b48[0m
+  id: [34m[1m5[0m,
+  comment: [31m[1m"[0m[31mgood movie[0m[31m[1m"[0m,
+  movie_id: [34m[1m47[0m,
+  list_id: [34m[1m6[0m,
+  created_at:
+   Thu, 22 May 2025 10:52:48.699060000 UTC +00:00,
+  updated_at:
+   Thu, 22 May 2025 10:52:48.699060000 UTC +00:00[32m>[0m,
+ [32m#<Bookmark:0x00007f24089c08c8[0m
+  id: [34m[1m6[0m,
+  comment: [31m[1m"[0m[31mgood movie[0m[31m[1m"[0m,
+  movie_id: [34m[1m46[0m,
+  list_id: [34m[1m6[0m,
+  created_at:
+   Thu, 22 May 2025 10:52:48.730988000 UTC +00:00,
+  updated_at:
+   Thu, 22 May 2025 10:52:48.730988000 UTC +00:00[32m>[0m]

@@ -1,0 +1,10 @@
+<h1>Bookmarks</h1>
+  <ul class= "list-group">
+    <% @bookmarks.each do |bookmark| %>
+      <li class="list-group-item d-flex flex-column align-items-start mb-2">
+        <%= link_to bookmark.comment, bookmark_path(bookmark) %>
+      </li>
+    <% if @bookmarks.empty? %>
+      <li>No lists found.</li>
+    <% end %>
+    <% end %>
