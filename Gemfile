@@ -7,6 +7,7 @@ gem "rails", "~> 7.1.5", ">= 7.1.5.1"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
+gem 'dotenv', groups: [:development, :test]
 
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
@@ -31,6 +32,7 @@ gem "font-awesome-sass", "~> 6.1"
 gem "simple_form"
 gem "sassc-rails"
 gem "faker"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
