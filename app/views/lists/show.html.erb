@@ -6,15 +6,17 @@
     <% end %>
   </div>
 
+
   <!-- List header with background image -->
   <div class="card mb-5 border-0 shadow">
+  <%= link_to list_path(@list), 
+      data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to remove this list?" },
+      class: "btn btn-sm btn-outline-danger" do %>
+    <i class="fas fa-trash me-1"></i>Remove List
+  <% end %>
     <div class="card-img-overlay-wrapper position-relative rounded overflow-hidden" style="height: 200px;">
-      <% if @list.name.downcase.include?('romantic') %>
-        <img src="https://images.pexels.com/photos/984944/pexels-photo-984944.jpeg" class="card-img w-100 h-100 object-fit-cover" alt="<%= @list.name %>">
-      <% elsif @list.name.downcase.include?('action') %>
-        <img src="https://images.pexels.com/photos/267961/pexels-photo-267961.jpeg" class="card-img w-100 h-100 object-fit-cover" alt="<%= @list.name %>">
-      <% elsif @list.name.downcase.include?('comedy') %>
-        <img src="https://images.pexels.com/photos/10530131/pexels-photo-10530131.jpeg" class="card-img w-100 h-100 object-fit-cover" alt="<%= @list.name %>">
+      <% if @list.image.attached? %>
+        <img src="<%= cl_image_path @list.image.key, height: 300, crop: :fill %>" class="card-img w-100 h-100 object-fit-cover" alt="<%= @list.name %>">
       <% else %>
         <img src="https://images.pexels.com/photos/65128/pexels-photo-65128.jpeg" class="card-img w-100 h-100 object-fit-cover" alt="<%= @list.name %>">
       <% end %>

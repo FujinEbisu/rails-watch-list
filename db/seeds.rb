@@ -27,7 +27,7 @@ puts "Creating movies done!"
 print "Creating lists..."
 
 # Create some lists
-List.create!(name: "Action Movies")
+List.create!(name: "Action Movies", image:"")
 List.create!(name: "Romantic Movies")
 List.create!(name: "Comedy Movies")
 

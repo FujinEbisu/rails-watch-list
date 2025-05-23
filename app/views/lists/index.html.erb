@@ -41,45 +41,41 @@
   </div>
   
   <% if @lists.any? %>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      <% @lists.each do |list| %>
-        <div class="col">
-          <%= link_to list_path(list), class: "text-decoration-none" do %>
-            <div class="card h-100 border-0 shadow-sm">
-              <div class="card-img-top position-relative" style="height: 200px; background-color: #222; overflow: hidden;">
-                <% if list.name.downcase.include?('romantic') %>
-                  <img src="https://images.pexels.com/photos/984944/pexels-photo-984944.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="w-100 h-100 object-fit-cover" alt="<%= list.name %>">
-                <% elsif list.name.downcase.include?('action') %>
-                  <img src="https://images.pexels.com/photos/267961/pexels-photo-267961.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="w-100 h-100 object-fit-cover" alt="<%= list.name %>">
-                <% elsif list.name.downcase.include?('comedy') %>
-                  <img src="https://images.pexels.com/photos/10530131/pexels-photo-10530131.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="w-100 h-100 object-fit-cover" alt="<%= list.name %>">
-                <% else %>
-                  <img src="https://images.pexels.com/photos/65128/pexels-photo-65128.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="w-100 h-100 object-fit-cover" alt="<%= list.name %>">
-                <% end %>
-                <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
-                  <h5 class="text-white fw-bold mb-0"><%= list.name %></h5>
-                  <span class="badge bg-light text-dark mt-2"><i class="fas fa-film me-1"></i><%= list.bookmarks.count %> movies</span>
-                </div>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <% @lists.each do |list| %>
+      <div class="col">
+        <%= link_to list_path(list), class: "text-decoration-none" do %>
+          <div class="card h-200 border-0 shadow-sm">
+            <div class="card-img-top position-relative" style="height: 200px; background-color: #222; overflow: hidden;">
+              <% if list.image.attached? %>
+                <img src="<%= cl_image_path list.image.key, height: 200, crop: :fill %>" class="card-img w-200 h-200 object-fit-cover" alt="<%= list.name %>">
+              <% else %>
+                <img src="https://images.pexels.com/photos/65128/pexels-photo-65128.jpeg" class="card-img w-200 h-200 object-fit-cover" alt="<%= list.name %>">
+              <% end %>
+              <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                <h5 class="text-white fw-bold mb-0"><%= list.name %></h5>
+                <span class="badge bg-light text-dark mt-2"><i class="fas fa-film me-1"></i><%= list.bookmarks.count %> movies</span>
               </div>
             </div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="text-center p-5 bg-light rounded shadow-sm">
-      <% if params[:query].present? %>
-        <p class="text-muted mb-3">No lists found matching "<%= params[:query] %>".</p>
-        <%= link_to "Back to all lists", lists_path, class: "btn btn-outline-secondary" %>
-      <% else %>
-        <i class="fas fa-film fa-3x text-secondary mb-3"></i>
-        <p class="text-muted mb-3">You don't have any movie lists yet.</p>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newListModal">
-          Create your first movie list
-        </button>
-      <% end %>
-    </div>
-  <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="text-center p-5 bg-light rounded shadow-sm">
+    <% if params[:query].present? %>
+      <p class="text-muted mb-3">No lists found matching "<%= params[:query] %>".</p>
+      <%= link_to "Back to all lists", lists_path, class: "btn btn-outline-secondary" %>
+    <% else %>
+      <i class="fas fa-film fa-3x text-secondary mb-3"></i>
+      <p class="text-muted mb-3">You don't have any movie lists yet.</p>
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newListModal">
+        Create your first movie list
+      </button>
+    <% end %>
+  </div>
+<% end %>
 </div>
 
 <!-- New List Modal -->
@@ -91,13 +87,13 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <%= form_with(model: List.new, url: lists_path, local: true) do |form| %>
+        <%=  simple_form_for @list, url: lists_path do |f| %>
           <div class="mb-3">
-            <%= form.label :name, "List Name", class: "form-label" %>
-            <%= form.text_field :name, class: "form-control", placeholder: "Enter a name for your list", required: true %>
+            <%= f.input :name, label: "List Name", placeholder: "Enter a name for your list", required: true %>
+            <%= f.input :image, as: :file %>
           </div>
           <div class="d-grid">
-            <%= form.submit "Create List", class: "btn btn-success" %>
+            <%= f.submit "Create List", class: "btn btn-success" %>
           </div>
         <% end %>
       </div>

@@ -8,6 +8,7 @@ class ListsController < ApplicationController
     else
       @lists = List.all
     end
+    @list = List.new
   end
 
   # GET /lists/:id
@@ -58,6 +59,6 @@ class ListsController < ApplicationController
   end
 
   def list_params
-    params.require(:list).permit(:name, :description)
+    params.require(:list).permit(:name, :description, :image)
   end
 end

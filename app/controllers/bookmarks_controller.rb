@@ -17,6 +17,12 @@ class BookmarksController < ApplicationController
     redirect_to list_path(@list), notice: 'Bookmark was successfully destroyed.'
   end
 
+  def new
+    @list = List.find(params[:list_id])
+    @bookmark = Bookmark.new
+    @bookmark.list = @list
+  end
+
   private
 
   def bookmark_params
